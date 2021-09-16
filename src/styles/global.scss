@@ -1,0 +1,37 @@
+@use './vars.scss';
+@use './colors.scss';
+@use './mixins.scss' as *;
+
+@use './styles/input.scss';
+
+::-webkit-scrollbar {
+   width: 5px;
+   height: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+   @apply bg-gray-400;
+   border-radius: 1ex;
+   &:hover {
+      @apply bg-gray-500;
+   }
+   &:active {
+      @apply bg-gray-600;
+   }
+}
+
+body {
+   margin: 0;
+   font-family: 'Lexend Deca', sans-serif;
+   padding-top: vars.$navbarHeight + 5px;
+}
+@include forLight {
+   body {
+      @apply bg-light-500;
+   }
+}
+@include forDark {
+   body {
+      background-color: colors.$gray-800;
+   }
+}

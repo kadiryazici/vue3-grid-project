@@ -1,0 +1,9 @@
+@use '/src/styles/mixins.scss' as *;
+
+.vi-input-text {
+   @apply shadow-sm p-2 rounded-md outline-none transition-shadow duration-300 box-border 
+      border-solid border-gray-300 border-width-2px placeholder-gray-400 .dark:placeholder-dark-50
+      focus:(border-blue-400 shadow-lg)
+      dark:(bg-dark-500 text-white border-dark-50)
+      dark:(focus:(border-blue-400));
+}

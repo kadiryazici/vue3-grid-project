@@ -1,0 +1,6 @@
+{
+   "volar.tsPlugin": true,
+   "typescript.preferences.importModuleSpecifier": "non-relative",
+   "scss.lint.unknownAtRules": "ignore",
+   "css.lint.unknownAtRules": "ignore"
+}
