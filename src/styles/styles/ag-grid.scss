@@ -1,0 +1,18 @@
+@use '/src/styles/mixins.scss' as *;
+
+// .ag-root-wrapper {
+//    @apply rounded-t-md;
+// }
+.ag-root-wrapper {
+   border: none !important;
+   @apply shadow-sm;
+}
+.ag-root-wrapper {
+   border: none !important;
+   @apply shadow-sm;
+}
+@include forLight {
+   .ag-header {
+      @apply shadow z-1;
+   }
+}

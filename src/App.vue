@@ -1,20 +1,6 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
 import Navbar from './components/Navbar.vue';
-import { watchEffect } from 'vue';
-import { useMainStore } from '/src/stores/mainStore';
-
-const mainStore = useMainStore();
-// Dinamik olarak karanlık ve açık tema renklerini çekiyorum
-// böylece 160kb tasarruf sağlamış oluyorum
-// vite her seferinde internetten çekmeyecek kadar akıllı.
-watchEffect(() => {
-   if (mainStore.isDarkMode) {
-      import('ag-grid-community/dist/styles/ag-theme-alpine-dark.css');
-   } else {
-      import('ag-grid-community/dist/styles/ag-theme-alpine.css');
-   }
-});
 </script>
 
 <template>

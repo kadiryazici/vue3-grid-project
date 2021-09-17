@@ -1,0 +1,17 @@
+@use '/src/styles/colors.scss';
+
+.rankcell-wrapper {
+   @apply w-full h-full;
+   .rankcell-body {
+      @apply rounded-md;
+      padding: 5px;
+      &.above-0 {
+         color: colors.$green;
+         background-color: rgba(colors.$green, 0.1);
+      }
+      &.under-0 {
+         color: colors.$red;
+         background-color: rgba(colors.$red, 0.1);
+      }
+   }
+}

@@ -19,7 +19,7 @@
 }
 
 @mixin forLight {
-   :not(.dark) {
+   :root:not(.dark) {
       @content;
    }
 }

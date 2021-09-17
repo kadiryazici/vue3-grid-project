@@ -3,35 +3,35 @@
 @use './mixins.scss' as *;
 
 @use './styles/input.scss';
+@use './styles/redGreenCellRenderer.scss';
+@use './styles/scrollbar.scss';
+@use './styles/body.scss';
+@use './styles/ag-grid.scss';
 
-::-webkit-scrollbar {
-   width: 5px;
-   height: 5px;
+:root {
+   --color-green: #{colors.$green};
+   --color-red: #{colors.$red};
+   --color-midBlack: #{colors.$midBlack};
+   --color-white: #{colors.$white};
+   --color-black: #{colors.$black};
+   --color-accent: #{colors.$accent};
+   --color-orange: #{colors.$orange};
+   --color-accent-dark: #{colors.$accentdark};
+
+   --color-url-column: #7373ff;
 }
 
-::-webkit-scrollbar-thumb {
-   @apply bg-gray-400;
-   border-radius: 1ex;
-   &:hover {
-      @apply bg-gray-500;
-   }
-   &:active {
-      @apply bg-gray-600;
-   }
-}
-
-body {
-   margin: 0;
-   font-family: 'Lexend Deca', sans-serif;
-   padding-top: vars.$navbarHeight + 5px;
-}
 @include forLight {
-   body {
-      @apply bg-light-500;
+   & {
+      --ag-header-foreground-color: #{colors.$accent} !important;
+      --ag-header-background-color: hsl(240, 100%, 99%);
+      --color-keyword-column: #6b6b99;
+      --ag-odd-row-background-color: #fff;
+      --ag-border-color: transparent;
    }
 }
 @include forDark {
-   body {
-      background-color: colors.$gray-800;
+   & {
+      --color-keyword-column: #{colors.$white} !important;
    }
 }

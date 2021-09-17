@@ -1,0 +1,15 @@
+::-webkit-scrollbar {
+   width: 5px;
+   height: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+   @apply bg-gray-400;
+   border-radius: 1ex;
+   &:hover {
+      @apply bg-gray-500;
+   }
+   &:active {
+      @apply bg-gray-600;
+   }
+}

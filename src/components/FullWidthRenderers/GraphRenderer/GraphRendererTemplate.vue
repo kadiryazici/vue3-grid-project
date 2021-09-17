@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { KeywordResponse } from '$types';
-import type { ICellRendererParams } from 'ag-grid-community';
+import type { ICellRendererParams } from '@ag-grid-enterprise/all-modules';
 
 import { computed, ref, onMounted, unref, nextTick, watchEffect } from 'vue';
 import ApexCharts, { ApexOptions } from 'apexcharts';
@@ -11,6 +11,7 @@ import { useMainStore } from '/src/stores/mainStore';
 import { transformNumber } from '$helpers/transformNumber';
 
 import IconClose from 'virtual:icons/icon-park-outline/close';
+import { getCSSVar } from '$helpers/getCSSVar';
 
 const props = defineProps<{
    params: ICellRendererParams;
@@ -26,7 +27,10 @@ const params = computed(() => props.params);
 const graphRenderer = ref(null as HTMLDivElement | null);
 const keywordData = computed(() => params.value.node.data as KeywordResponse);
 
-const [volumeData, isError] = await fetchSearchVolume(keywordData.value);
+const [volumeData, isError, response] = await fetchSearchVolume(keywordData.value);
+if (isError) {
+   console.error({ data: volumeData, response });
+}
 
 const apexOptions = ref<ApexOptions>({
    series: [{ data: volumeData.map((v) => v.volume), name: 'Volume' }],
@@ -37,10 +41,10 @@ const apexOptions = ref<ApexOptions>({
          show: false
       }
    },
-   colors: ['#2E93fA'],
-   legend: {
-      show: false
-   },
+   colors: ['var(--color-accent)'],
+   // legend: {
+   //    show: false
+   // },
    yaxis: {
       labels: {
          formatter: transformNumber
@@ -50,7 +54,7 @@ const apexOptions = ref<ApexOptions>({
       categories: volumeData.map((v) => v.date),
       labels: {
          style: {
-            colors: ['#2E93fA'],
+            colors: Array(volumeData.length).fill(lightText),
             fontSize: '12px'
          }
       }
@@ -59,10 +63,11 @@ const apexOptions = ref<ApexOptions>({
 
 watchEffect(() => {
    const { style } = apexOptions.value.xaxis!.labels!;
+
    if (mainStore.isDarkMode) {
-      style!.colors = [lightText];
+      style!.colors = Array(volumeData.length).fill(lightText);
    } else {
-      style!.colors = [darkText];
+      style!.colors = Array(volumeData.length).fill(darkText);
    }
 
    chart && chart.updateOptions(apexOptions.value);
@@ -77,8 +82,8 @@ onMounted(async () => {
 
    chart = new ApexCharts(unref(graphRenderer)!, unref(apexOptions)!);
    await chart.render();
-   await nextTick();
    // manuel olarak bir kere güncellenmesi gerekiyor yoksa derlenmiyor niyeyse
+   await nextTick();
    chart.updateOptions(unref(apexOptions)!);
    unref(graphRenderer)!.scrollIntoView();
 });
@@ -87,9 +92,10 @@ onMounted(async () => {
 <template>
    <div :style="[cssHeightVar]" class="graph-renderer">
       <div class="bar">
-         <h2 class="graph-title">{{ keywordData.keyword }}</h2>
+         <h2 class="graph-title">SEARCH VOLUME: {{ keywordData.avgSearchVolume }}</h2>
          <div @click="closeRenderer" role="button" class="close"><IconClose /></div>
       </div>
+      <div class="subtext">{{ keywordData.keyword }}</div>
       <div ref="graphRenderer"></div>
    </div>
 </template>
@@ -97,17 +103,20 @@ onMounted(async () => {
 <!-- scoped olmamalı çünkü Ag-Grid style destekli derlemiyor -->
 <style lang="scss">
 .graph-renderer {
-   @apply w-full overflow-hidden;
+   @apply w-full overflow-hidden px-4 box-border;
    height: var(--height);
    animation: openRendererAnim 0.5s ease;
    .bar {
-      @apply flex w-full justify-between py-5 px-3 box-border;
+      @apply flex w-full justify-between py-5 pt-9 px-3 box-border;
       .graph-title {
-         @apply m-0 inline-block text-blue-500;
+         @apply m-0 inline-block text-[var(--color-accent)];
       }
       .close {
-         @apply text-blue-500 cursor-pointer text-size-20px;
+         @apply text-[var(--color-accent)] cursor-pointer text-size-20px;
       }
+   }
+   .subtext {
+      @apply px-3 text-size-15px py-2 text-[var(--color-accent-dark)];
    }
 }
 

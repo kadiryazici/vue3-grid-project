@@ -5,3 +5,4 @@ dist-ssr
 *.local
 src/api/_vars.ts
 ztest.http
+apply-ag-grid-license.ts

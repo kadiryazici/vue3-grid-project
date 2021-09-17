@@ -1,0 +1,19 @@
+@use '/src/styles/colors.scss';
+@use '/src/styles/vars.scss';
+@use '/src/styles/mixins.scss' as *;
+
+body {
+   margin: 0;
+   font-family: 'Lexend Deca', sans-serif;
+   padding-top: vars.$navbarHeight + 5px;
+}
+@include forLight {
+   body {
+      @apply bg-light-500;
+   }
+}
+@include forDark {
+   body {
+      background-color: colors.$gray-800;
+   }
+}

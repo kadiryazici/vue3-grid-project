@@ -13,12 +13,12 @@
       "serve": "vite preview"
    },
    "dependencies": {
-      "@ag-grid-enterprise/core": "^26.0.0",
-      "@types/lodash.debounce": "^4.0.6",
+      "@ag-grid-enterprise/all-modules": "^26.0.1",
       "@vue/server-renderer": "^3.2.11",
       "@vueuse/core": "^6.3.3",
       "@vueuse/head": "^0.6.0",
       "ag-grid-community": "^26.0.0",
+      "ag-grid-enterprise": "^26.0.1",
       "ag-grid-vue3": "^26.0.1",
       "apexcharts": "^3.28.1",
       "lodash.debounce": "^4.0.8",
@@ -26,12 +26,12 @@
       "pinia": "^2.0.0-rc.9",
       "vierone": "^0.3.5",
       "vue": "3.2.11",
-      "vue-class-component": "^8.0.0-rc.1",
-      "vue3-apexcharts": "^1.4.1"
+      "vue-class-component": "^8.0.0-rc.1"
    },
    "devDependencies": {
       "@iconify/json": "^1.1.402",
       "@types/fs-extra": "^9.0.12",
+      "@types/lodash.debounce": "^4.0.6",
       "@types/node": "^16.9.1",
       "@vitejs/plugin-legacy": "^1.5.3",
       "@vitejs/plugin-vue": "^1.6.1",

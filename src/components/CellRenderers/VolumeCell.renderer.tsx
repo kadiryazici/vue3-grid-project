@@ -8,7 +8,7 @@ export const VolumeCellRenderer = defineComponent({
    setup: (props) => () =>
       (
          <span style={{ display: 'inline-flex', alignItems: 'center' }}>
-            <VolumeIcon style={{ marginRight: '7px' }} />
+            <VolumeIcon style={{ fontSize: '20px', marginRight: '7px', color: 'var(--color-accent)' }} />
             <TransformNumberRenderer params={props.params} />
          </span>
       )

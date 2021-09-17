@@ -13,7 +13,8 @@ const mainStore = useMainStore();
       <div id="navbar">
          <!-- LINKS -->
          <span class="links">
-            <RouterLink class="navbar-link" to="/">Home</RouterLink>
+            <RouterLink class="navbar-link" to="/">Vue Sayfalandırma</RouterLink>
+            <RouterLink class="navbar-link" to="/datasource">Data Source Sayfalandırma</RouterLink>
          </span>
          <!-- ICONS -->
          <span class="icons">
@@ -42,17 +43,18 @@ const mainStore = useMainStore();
       @apply z-999 flex items-center justify-between  box-border px-3 w-full max-w-850px mx-auto;
       height: vars.$navbarHeight;
       .navbar-link {
-         @apply no-underline text-blue-400 text-size-15px px-2 font-bold py-1 border-width-1px border-solid border-transparent;
-         @apply hover:(text-blue-600);
+         @apply transition-colors duration-300;
+         @apply no-underline rounded-md text-[var(--color-accent)] text-size-15px px-2 font-bold py-1;
+         @apply hover:(opacity-50);
          &.router-link-exact-active {
-            @apply rounded-md text-blue-400;
+            @apply rounded-md text-white  shadow bg-[var(--color-accent)];
          }
       }
 
       .icons {
          // @apply overflow-hidden;
          .icon {
-            @apply text-size-20px text-blue-400 cursor-pointer overflow-hidden inline-block;
+            @apply text-size-20px text-[var(--color-accent)] cursor-pointer overflow-hidden inline-block;
          }
       }
    }
