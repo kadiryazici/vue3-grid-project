@@ -13,8 +13,8 @@ const mainStore = useMainStore();
       <div id="navbar">
          <!-- LINKS -->
          <span class="links">
-            <RouterLink class="navbar-link" to="/">Vue Sayfalandırma</RouterLink>
-            <RouterLink class="navbar-link" to="/datasource">Data Source Sayfalandırma</RouterLink>
+            <RouterLink class="navbar-link" to="/">Vue + Fetch</RouterLink>
+            <RouterLink class="navbar-link" to="/datasource">Data Source</RouterLink>
          </span>
          <!-- ICONS -->
          <span class="icons">

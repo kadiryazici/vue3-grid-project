@@ -22,6 +22,7 @@
       "ag-grid-enterprise": "^26.0.1",
       "ag-grid-vue3": "^26.0.1",
       "apexcharts": "^3.28.1",
+      "bottom-sheet-vue3": "^1.0.2",
       "dayjs": "^1.10.7",
       "lodash.debounce": "^4.0.8",
       "nanoid": "^3.1.25",

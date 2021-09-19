@@ -2,6 +2,7 @@ import type { ColDef } from '@ag-grid-enterprise/all-modules';
 import { KeywordResponse } from '$types';
 import { RankCellRenderer } from '/src/components/CellRenderers/RankCellRenderer';
 import { RedGreenCellRenderer } from '/src/components/CellRenderers/RedGreenCellRenderer';
+import { TransformNumberRenderer } from '/src/components/CellRenderers/TransformNumber.renderer';
 import { VolumeCellRenderer } from '/src/components/CellRenderers/VolumeCell.renderer';
 import { createColorRenderer } from '/src/components/CellRenderers/ColorRenderer';
 import { noSortCol } from '/src/configs/agGrid';
@@ -36,7 +37,7 @@ export const columnDefs: ColDef[] = [
    {
       field: 'pixelRank' as Field,
       headerName: 'PX RANK',
-      cellRendererFramework: RedGreenCellRenderer
+      cellRendererFramework: TransformNumberRenderer
    },
    {
       field: 'diffPixelRank' as Field,

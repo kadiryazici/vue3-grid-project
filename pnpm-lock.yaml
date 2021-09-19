@@ -20,6 +20,7 @@ specifiers:
   ag-grid-enterprise: ^26.0.1
   ag-grid-vue3: ^26.0.1
   apexcharts: ^3.28.1
+  bottom-sheet-vue3: ^1.0.2
   cross-env: ^7.0.3
   dayjs: ^1.10.7
   fs-extra: ^10.0.0
@@ -50,6 +51,7 @@ dependencies:
   ag-grid-enterprise: 26.0.1
   ag-grid-vue3: 26.0.1_33d29b3654d8d65800390fcef108c3d9
   apexcharts: 3.28.1
+  bottom-sheet-vue3: 1.0.2
   dayjs: 1.10.7
   lodash.debounce: 4.0.8
   nanoid: 3.1.25
@@ -1039,6 +1041,12 @@ packages:
   /bluebird/3.7.2:
     resolution: {integrity: sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==}
     dev: true
+
+  /bottom-sheet-vue3/1.0.2:
+    resolution: {integrity: sha512-+sCI7I1JGO2tB000mt1k+B/2m3BP4mD5WhtlJMyn5zXPFX+GIAYdwrj+ZLl+Ke/yNiAgDyG6d0QrG/lg2vQVnQ==}
+    dependencies:
+      vue: 3.2.11
+    dev: false
 
   /brace-expansion/1.1.11:
     resolution: {integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==}

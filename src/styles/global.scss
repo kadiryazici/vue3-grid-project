@@ -29,12 +29,12 @@
       --ag-odd-row-background-color: #fff;
       --ag-border-color: transparent;
 
-      --color-apex-text: #1e1f1e;
+      --color-reversed: #1e1f1e;
    }
 }
 @include forDark {
    & {
       --color-keyword-column: #{colors.$white} !important;
-      --color-apex-text: #fff;
+      --color-reversed: #fff;
    }
 }

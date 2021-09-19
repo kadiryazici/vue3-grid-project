@@ -1,6 +1,5 @@
 import type { CellClassParams } from '@ag-grid-enterprise/all-modules';
 import StarIcon from 'virtual:icons/mdi/star';
-import { TransformNumberRenderer } from '/src/components/CellRenderers/TransformNumber.renderer';
 import { defineComponent } from 'vue';
 
 export const RankCellRenderer = defineComponent({

@@ -11,11 +11,14 @@ import { useAsyncKeywordData, fetchKeywordData } from '$api/Keyword';
 import { useMainStore } from '/src/stores/mainStore';
 import { AgGridDefaultOptions } from '/src/configs/agGrid';
 import { columnDefs, KEYWORD_SEARCH_LIMIT } from '/src/configs/defaults';
+import { getRandomURL } from '$helpers/getRandomURL';
+import { randomBetween } from '$helpers/randomBetween';
 
-import { GraphRendererHeight } from '/src/components/FullWidthRenderers/GraphRenderer/graph.renderer';
-import { GraphRenderer } from '/src/components/FullWidthRenderers/GraphRenderer/graph.renderer';
+import { GraphRendererHeight, GraphRenderer } from '/src/components/FullWidthRenderers/GraphRenderer/graph.renderer';
 import LeftIcon from 'virtual:icons/icon-park-outline/left';
 import RightIcon from 'virtual:icons/icon-park-outline/right';
+import { Sheet } from 'bottom-sheet-vue3';
+import GraphRendererTemplate from '../components/FullWidthRenderers/GraphRenderer/GraphRendererTemplate.vue';
 
 const mainStore = useMainStore();
 
@@ -23,9 +26,13 @@ const query = ref('akakce.com');
 const page = ref(1);
 const perPage = ref(KEYWORD_SEARCH_LIMIT);
 
+const isSheetOpen = ref(false);
+const isModal = ref(false);
+const sheetData = ref(null as null | KeywordResponse);
+
 const componentGridOptions: GridOptions = {
    ...AgGridDefaultOptions,
-   getRowHeight: ({ data }: { data: KeywordResponse }) => (data?.isClicked ? GraphRendererHeight : 40),
+   getRowHeight: ({ data }) => ((data as KeywordResponse)?.isClicked ? GraphRendererHeight : 40),
    fullWidthCellRendererFramework: GraphRenderer
 };
 
@@ -40,7 +47,15 @@ const { ignoreUpdates: ignoreRowData } = ignorableWatch(rowData, (newRowData) =>
    if (newRowData) {
       ignoreRowData(() => {
          rowData.value = newRowData.map((rowdata) => {
-            return { ...rowdata, isClicked: false };
+            // bazı veriler hep boş ya da 0 geliyordu ben de rastgeleleştirdim.
+            return {
+               ...rowdata,
+               isClicked: false,
+               landingPage: getRandomURL(),
+               diffPixelRank: randomBetween(-100, 100, { floor: true }),
+               pixelRank: randomBetween(1250, 1e5, { floor: true }),
+               cpc: parseFloat(randomBetween(22, 1e3).toFixed(2))
+            };
          });
       });
    }
@@ -55,24 +70,29 @@ const { ignoreUpdates: ignoreQuery } = ignorableWatch(query, () => debouncedFetc
 const { ignoreUpdates: ignorePage } = ignorableWatch(page, () => debouncedFetchNewData('page'));
 const { ignoreUpdates: ignorePerPage } = ignorableWatch(perPage, () => debouncedFetchNewData());
 /**
- * Geciktirilmiş fonksiyon. Bu fonksiyon çağırıldığında eğer 300 milisaniye boyunca tekrar çağırılmaz ise çalışacak
- * eğer tekrar çağırılırsa yine baştan 300 milisaniye bekleyecek.
+ * Geciktirilmiş fonksiyon. Bu fonksiyon çağırıldığında eğer 400 milisaniye boyunca tekrar çağırılmaz ise çalışacak
+ * eğer tekrar çağırılırsa yine baştan 400 milisaniye bekleyecek.
  */
-const debouncedFetchNewData = debounce(async (kind?: 'page' | 'query') => {
+const debouncedFetchNewData = debounce(async (kind?: 'page' | 'query' | 'perPage') => {
    if (kind === 'query') {
       ignorePage(() => {
          page.value = 1;
       });
    }
 
-   if (unref(query).length <= 0 || unref(page) <= 0 || unref(perPage) <= 0) {
+   const _query = unref(query);
+   const _page = unref(page);
+   const _perPage = unref(perPage);
+
+   const isOneLowerThan0 = [_query.length, _page, _perPage].some((v) => v <= 0);
+   if (isOneLowerThan0) {
       rowData.value = [];
       return;
    }
    const [data, isError, response] = await fetchKeywordData({
-      domain: unref(query),
-      page: unref(page),
-      limit: unref(perPage)
+      domain: _query,
+      page: _page,
+      limit: _perPage
    });
    if (isError) {
       rowData.value = [];
@@ -80,14 +100,19 @@ const debouncedFetchNewData = debounce(async (kind?: 'page' | 'query') => {
       return;
    }
    rowData.value = data;
-}, 350);
+}, 400);
 
 /**
  * Hücreye tıklandığında çalışan event
  */
 function onCellClicked(e: RowClickedEvent) {
-   const { node } = e;
-   (node.data as KeywordResponse).isClicked = !(node.data as KeywordResponse).isClicked;
+   const keywordData = e.node.data as KeywordResponse;
+   if (unref(isModal)) {
+      isSheetOpen.value = true;
+      sheetData.value = unref(keywordData);
+      return;
+   }
+   keywordData.isClicked = !keywordData.isClicked;
 }
 
 /**
@@ -100,10 +125,33 @@ function isFullWidth(node: RowNode) {
 
 <template>
    <div id="main-page">
+      <Sheet
+         minHeight="500px"
+         :sheetColor="mainStore.isDarkMode ? 'var(--color-midBlack)' : undefined"
+         maxWidth="850px"
+         v-slot="{ closeSelf }"
+         v-model:visible="isSheetOpen"
+      >
+         <GraphRendererTemplate
+            :params="{
+               //@ts-ignore
+               // burada sahteden veri sanki ag-gridden geliyormuş gibi bu düzene soktum
+               node: { data: sheetData }
+            }"
+            :modal="true"
+            :modalCloser="closeSelf"
+         >
+         </GraphRendererTemplate>
+      </Sheet>
+
       <div class="top-section">
-         <div class="mr-auto flex-nowrap">
+         <div class="mr-auto flex-nowrap items-center">
             <span class="label">Ara:</span>
-            <input placeholder="Aramak için girin" class="vi-input-text ml-2" v-model.trim="query" type="text" />
+            <input placeholder="Aramak için girin" class="vi-input-text ml-2 mr-2" v-model.trim="query" type="text" />
+            <label class="font-bold"
+               >Modal View?
+               <input class="align-middle" type="checkbox" v-model="isModal" />
+            </label>
          </div>
       </div>
 
@@ -116,7 +164,6 @@ function isFullWidth(node: RowNode) {
          @cellClicked="onCellClicked"
          :isFullWidthCell="isFullWidth"
          :gridOptions="componentGridOptions"
-         :modules="[]"
       ></AgGridVue>
       <div class="pagination">
          <span class="text-size-13px font-bold text-[var(--color-accent)]">Per Page:</span>
