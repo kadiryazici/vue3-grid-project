@@ -8,6 +8,7 @@ import WindiCSS from 'vite-plugin-windicss';
 import { defineConfig } from 'vite';
 import path from 'node:path';
 
+const isBuildSSR = !!process.env.SSR_BUILD;
 const root = process.cwd();
 
 // https://vitejs.dev/config/
@@ -39,6 +40,9 @@ export default defineConfig({
          $api: GetPath('src', 'api'),
          $types: GetPath('src', 'types.ts')
       }
+   },
+   build: {
+      outDir: isBuildSSR ? 'dist-ssr' : 'dist'
    }
 });
 

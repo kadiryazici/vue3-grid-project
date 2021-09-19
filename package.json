@@ -7,6 +7,7 @@
    "scripts": {
       "dev:ssr": "vite-ssr --open",
       "dev:spa": "vite",
+      "build:ssr": "cross-env SSR_BUILD=yes vite-ssr build",
       "build:spa": "vite build",
       "vercel:dist": "node scripts/configureVercel.js",
       "vercel:deploy": "cd ./serverless && vercel --prod",
@@ -37,6 +38,7 @@
       "@vitejs/plugin-vue": "^1.6.1",
       "@vitejs/plugin-vue-jsx": "^1.1.8",
       "@vue/compiler-sfc": "3.2.11",
+      "cross-env": "^7.0.3",
       "fs-extra": "^10.0.0",
       "sass": "^1.40.1",
       "typescript": "^4.3.2",

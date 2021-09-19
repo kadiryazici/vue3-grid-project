@@ -2,8 +2,6 @@ import 'virtual:windi.css';
 import 'ag-grid-enterprise/dist/styles/ag-grid.css';
 import 'ag-grid-enterprise';
 
-import { AllModules, ModuleRegistry, ServerSideRowModelModule } from '@ag-grid-enterprise/all-modules';
-
 import App from './App.vue';
 import { LicenseManager } from 'ag-grid-enterprise';
 import { createHead } from '@vueuse/head';

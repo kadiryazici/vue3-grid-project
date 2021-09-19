@@ -6,7 +6,7 @@ import { AgGridVue } from 'ag-grid-vue3';
 import { ref, unref } from 'vue';
 import { ignorableWatch } from '@vueuse/core';
 import debounce from 'lodash.debounce';
-import { AllModules } from '@ag-grid-enterprise/all-modules';
+// import { AllModules } from '@ag-grid-enterprise/all-modules';
 
 import { useAsyncKeywordData, fetchKeywordData } from '$api/Keyword';
 import { useMainStore } from '/src/stores/mainStore';
@@ -117,7 +117,7 @@ function isFullWidth(node: RowNode) {
          @cellClicked="onCellClicked"
          :isFullWidthCell="isFullWidth"
          :gridOptions="componentGridOptions"
-         :modules="AllModules"
+         :modules="[]"
       ></AgGridVue>
       <div class="pagination">
          <span class="text-size-13px font-bold text-[var(--color-accent)]">Per Page:</span>

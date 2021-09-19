@@ -12,7 +12,7 @@ import type { KeywordResponse } from '$types';
 import { ServerSideStoreType } from '@ag-grid-enterprise/all-modules';
 import { AgGridVue } from 'ag-grid-vue3';
 import { ref } from 'vue';
-import { AllModules } from '@ag-grid-enterprise/all-modules';
+// import { AllModules } from '@ag-grid-enterprise/all-modules';
 
 import { useMainStore } from '/src/stores/mainStore';
 import { AgGridDefaultOptions } from '/src/configs/agGrid';
@@ -94,7 +94,7 @@ const isFullWidth = (node: RowNode) => (node.data as KeywordResponse)?.isClicked
          @cellClicked="onCellClicked"
          :isFullWidthCell="isFullWidth"
          :gridOptions="componentGridOptions"
-         :modules="AllModules"
+         :modules="[]"
       ></AgGridVue>
    </div>
 </template>
