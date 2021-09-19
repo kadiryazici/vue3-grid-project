@@ -48,7 +48,7 @@ export const columnDefs: ColDef[] = [
       headerName: 'URL-PAGE',
       flex: 2,
       ...noSortCol,
-      cellRendererFramework: createColorRenderer('var(--url-url-column)')
+      cellRendererFramework: createColorRenderer('var(--color-url-column)')
    },
    { field: 'cpc' as Field, headerName: 'CPC-$' }
 ];
