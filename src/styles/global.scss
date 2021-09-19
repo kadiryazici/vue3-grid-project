@@ -28,10 +28,13 @@
       --color-keyword-column: #6b6b99;
       --ag-odd-row-background-color: #fff;
       --ag-border-color: transparent;
+
+      --color-apex-text: #1e1f1e;
    }
 }
 @include forDark {
    & {
       --color-keyword-column: #{colors.$white} !important;
+      --color-apex-text: #fff;
    }
 }

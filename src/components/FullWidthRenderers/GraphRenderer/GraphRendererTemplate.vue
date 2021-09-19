@@ -1,91 +1,76 @@
 <script lang="ts" setup>
 import type { KeywordResponse } from '$types';
 import type { ICellRendererParams } from '@ag-grid-enterprise/all-modules';
+import type { ApexOptions } from 'apexcharts';
 
 import { computed, ref, onMounted, unref, nextTick, watchEffect } from 'vue';
-import ApexCharts, { ApexOptions } from 'apexcharts';
+import ApexCharts from 'apexcharts';
 
 import { GraphRendererHeight } from './graph.renderer';
 import { fetchSearchVolume } from '$api/SearchVolume';
-import { useMainStore } from '/src/stores/mainStore';
 import { transformNumber } from '$helpers/transformNumber';
 
 import IconClose from 'virtual:icons/icon-park-outline/close';
-import { getCSSVar } from '$helpers/getCSSVar';
+import { getMonthName } from '$helpers/getMonthName';
 
 const props = defineProps<{
    params: ICellRendererParams;
 }>();
 
-const mainStore = useMainStore();
-
 const cssHeightVar = `--height: ${GraphRendererHeight}px`;
-const [lightText, darkText] = ['#ffffff', '#1e1f1e'];
 let chart = null as null | ApexCharts;
 
-const params = computed(() => props.params);
-const graphRenderer = ref(null as HTMLDivElement | null);
-const keywordData = computed(() => params.value.node.data as KeywordResponse);
+const apexRoot = ref(null as HTMLDivElement | null);
+const keywordData = computed(() => props.params.node.data as KeywordResponse);
 
 const [volumeData, isError, response] = await fetchSearchVolume(keywordData.value);
 if (isError) {
    console.error({ data: volumeData, response });
+   throw response;
 }
 
+const textColors = Array(volumeData.length).fill('var(--color-apex-text)');
 const apexOptions = ref<ApexOptions>({
    series: [{ data: volumeData.map((v) => v.volume), name: 'Volume' }],
    chart: {
-      height: GraphRendererHeight - 100,
-      type: 'bar',
-      toolbar: {
-         show: false
-      }
+      height: `${GraphRendererHeight - 150}px`,
+      type: 'bar'
    },
    colors: ['var(--color-accent)'],
-   // legend: {
-   //    show: false
-   // },
    yaxis: {
       labels: {
-         formatter: transformNumber
+         formatter: transformNumber,
+         style: {
+            colors: textColors
+         }
       }
    },
    xaxis: {
-      categories: volumeData.map((v) => v.date),
+      categories: volumeData.map((v) => getMonthName(v.date).toUpperCase().slice(0, 3)),
       labels: {
          style: {
-            colors: Array(volumeData.length).fill(lightText),
+            colors: textColors,
             fontSize: '12px'
          }
       }
    }
 });
 
-watchEffect(() => {
-   const { style } = apexOptions.value.xaxis!.labels!;
-
-   if (mainStore.isDarkMode) {
-      style!.colors = Array(volumeData.length).fill(lightText);
-   } else {
-      style!.colors = Array(volumeData.length).fill(darkText);
-   }
-
-   chart && chart.updateOptions(apexOptions.value);
-});
-
 function closeRenderer() {
-   (unref(params).node.data as KeywordResponse).isClicked = false;
+   (props.params.node.data as KeywordResponse).isClicked = false;
 }
 
 onMounted(async () => {
-   if (!graphRenderer.value) return;
+   const root = unref(apexRoot);
+   const options = unref(apexOptions);
+   if (!root) return;
 
-   chart = new ApexCharts(unref(graphRenderer)!, unref(apexOptions)!);
+   chart = new ApexCharts(root, options);
    await chart.render();
    // manuel olarak bir kere güncellenmesi gerekiyor yoksa derlenmiyor niyeyse
    await nextTick();
-   chart.updateOptions(unref(apexOptions)!);
-   unref(graphRenderer)!.scrollIntoView();
+   chart.updateOptions(options);
+   root.scrollIntoView();
 });
 </script>
 
@@ -96,7 +81,7 @@ onMounted(async () => {
          <div @click="closeRenderer" role="button" class="close"><IconClose /></div>
       </div>
       <div class="subtext">{{ keywordData.keyword }}</div>
-      <div ref="graphRenderer"></div>
+      <div class="apex-root" ref="apexRoot"></div>
    </div>
 </template>
 
@@ -115,6 +100,7 @@ onMounted(async () => {
          @apply text-[var(--color-accent)] cursor-pointer text-size-20px;
       }
    }
+
    .subtext {
       @apply px-3 text-size-15px py-2 text-[var(--color-accent-dark)];
    }

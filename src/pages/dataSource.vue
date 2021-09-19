@@ -12,7 +12,6 @@ import type { KeywordResponse } from '$types';
 import { ServerSideStoreType } from '@ag-grid-enterprise/all-modules';
 import { AgGridVue } from 'ag-grid-vue3';
 import { ref } from 'vue';
-// import { AllModules } from '@ag-grid-enterprise/all-modules';
 
 import { useMainStore } from '/src/stores/mainStore';
 import { AgGridDefaultOptions } from '/src/configs/agGrid';

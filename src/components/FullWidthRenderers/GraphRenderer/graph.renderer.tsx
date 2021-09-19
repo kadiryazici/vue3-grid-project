@@ -2,7 +2,7 @@ import { Suspense, defineComponent } from 'vue';
 
 import GraphRendererTemplate from './GraphRendererTemplate.vue';
 
-export const GraphRendererHeight = 450;
+export const GraphRendererHeight = 500;
 
 /**
  * Bunun amacı normal GraphRenderTemplate component'ını Suspense ile sarmalamak ve Ag-Grid in prop hatasının önüne geçmek.

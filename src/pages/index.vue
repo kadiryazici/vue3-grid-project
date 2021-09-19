@@ -6,7 +6,6 @@ import { AgGridVue } from 'ag-grid-vue3';
 import { ref, unref } from 'vue';
 import { ignorableWatch } from '@vueuse/core';
 import debounce from 'lodash.debounce';
-// import { AllModules } from '@ag-grid-enterprise/all-modules';
 
 import { useAsyncKeywordData, fetchKeywordData } from '$api/Keyword';
 import { useMainStore } from '/src/stores/mainStore';

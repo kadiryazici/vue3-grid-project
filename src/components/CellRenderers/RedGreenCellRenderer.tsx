@@ -1,6 +1,6 @@
 import { computed, defineComponent, unref } from 'vue';
 
-import { CellClassParams } from '@ag-grid-enterprise/all-modules';
+import type { CellClassParams } from '@ag-grid-enterprise/all-modules';
 
 type ValueKind = 'above-0' | 'under-0' | 'normal';
 
